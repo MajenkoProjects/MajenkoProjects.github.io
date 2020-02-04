@@ -1,0 +1,25 @@
+body {
+    width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: Arial, Helvetica, Sans-Serif;
+}
+
+a {
+    text-decoration: none;
+    color: #886600;
+}
+
+.header {
+    text-align: center;
+}
+
+.project {
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px;
+    background-color: #cccccc;
+    padding: 15px;
+    margin-bottom: 10px;
+}
