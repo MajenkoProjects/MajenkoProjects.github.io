@@ -63,6 +63,48 @@ to be a better solution). Now you can record some room noise. Press the Record R
 <p>You should see a new phrase has been added to the currently selected chapter. The waveform display at the bottom should have updated to show the content of the phrase and,
 after a moment or two, should display the automatic trim information (if you have auto trimming turned on). There's quite a lot going on in that waveform display, so
 let's take a look at it now.</p>
+<img src="waveform.png"/>
+<p>The big central area is obviously the audio waveform. Whether you have mono or stereo as your input this display will always be a single waveform that shows the average
+of both channels. The area between the red is the live audio section that will play. The red areas are the trimmed off areas. The yellow lines are the requested trim
+points. Now, it's important to know that the yellow lines are <i>not</i> the ends of the red areas - they are where you (or the auto trimmer) has <i>requested</i> that the
+sample be trimmed. But that is most likely not where it will actually be trimmed. Instead it will be trimmed at the nearest positive-going zero crossing (that's a point
+at which the sample values go from negative to positive). That is where the ends of the red area will actually be. You can see it better if you zoom in (which you can
+do with the zoom in and zoom out icons on the right hand side of the waveform):</p>
+<img src="crops.png"/>
+<p>Now you can see that the end of the red is not the same as the yellow line. You can drag the yellow lines around to adjust the trim points.</p>
+<p>Ok, so what else is there around the waveform? Well, let's take the top line first.</p>
+<p><b>Raw Audio</b> - This checkbox will cause the waveform to display unprocessed audio. That is, audio without any effects applied. Useful if your computer is
+a little slow or you have some very complex effects that take a while to process.</p>
+<p><b>Phrase locked</b> - If this is turned on the phrase can't be modified. The phase is coloured blue in the tree view and you can't change the trim points or perform
+any other operations on the waveform. It prevents any accidental edits from happening.</p>
+<p><b>Flag for attention</b> - This is purely for your convenience. It allows you to flag a phrase as needing attention. You can then find it easily later on to
+adjust it.</p>
+<p><b>Post gap</b> - This is how much room noise to add between this phrase and the next. It's measured in milliseconds. It's automatcially set by recording
+the next sentence, but you can manually tweak the timing to get your phrases to flow better.</p>
+<p><b>Gain</b> - Just what it says: the gain (or volume) applied to this sample. You can also adjust this value using the mouse wheel over the waveform itself.</p>
+<p>That's all pretty straight forward. Now, on the left are three buttons for auto-processing the sample.  The top two are for setting the trim points, the upper being
+FFT based cropping, and the middle using an amplitude detection method. Below that is the &quot;normalize&quot; button. This will attempt to get the peak amplitude
+of the sample to be -3dB by automatically adjusting the gain for you. However this will not raise the gain above 100%. To do that you will have to adjust it manually.</p>
+<p>While we're talking about gain and -3dB, the waveform will indicate to you any points that exceed the -3dB threshold by colouring them in red to make it obvious
+where your peaks are that require attention.</p>
+<p>Along the bottom you have a dropdown box to select an effect to apply to this phrase. See <a href="effects.html">the page on effects</a> for working with effects.</p>
+<p>Next to that is the scrollbar for moving around the sample if zoomed in, and next to that are the splitting and cutting tools.</p>
+<p><b>Split</b> - This will allow you to split a sample into two separate samples.</p>
+<p><b>Cut</b> - This will allow you to cut out a section of the waveform.</p>
+<p><b>Execute</b> - This will light up when in either the split or cut mode and will actually perform the operation you have selected.</p>
+<p>That pretty much covers all the interesting things on the waveform. As you record more phrases you will notice that some have bigger gaps between them in the tree.
+This gap is related to the type of gap, dictated by the record button used. You can change the gap type, and perform lots of other operations, from the context
+(&quot;popup&quot;) menu on the phrases and chapters. Everything in there is pretty self explanatory, and you will be using those menus a lot, so spend some time
+getting to know what's there.</p>
+<p>Other interesting things in the tree view are the time in seconds and milliseconds of each phrase, and the total time in minutes and seconds of the chapters.</p>
+<p>Along side the times for the phrases are the peak decibel values relative to the -3dB sample amplitude. You want this to be at or below 0dB. Adjusting the gain
+updates this value for you. If it's above 0dB it is highlighted red. You also have any selected effects applied to phrases listed in this tree so you can more
+easily navigate your recordings.</p>
+<p>When you have finished a chapter and you're happy with how it all sounds you can export your chapter as an MP3 file. This is as simple as right-clicking
+on the chapter and selecting <span class="option">Export Chapter</span>. This will first combine all the phrases into a single WAV file, then convert the
+WAV file into an MP3 file using <span class="option">ffmpeg</span>. The MP3 file is then tagged with your book's details. The file is placed in a folder
+called <span class="option">export</span> within the folder for your book, located in your &quot;recordings&quot; folder (configurable in
+options).</p>
 </div>
 
 </body>
