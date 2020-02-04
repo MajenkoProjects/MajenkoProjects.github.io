@@ -23,3 +23,36 @@ a {
     padding: 15px;
     margin-bottom: 10px;
 }
+
+.menu {
+    float: left;
+    border-width: 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px 0px 10px 0px;
+    background-color: #dddddd;
+    padding: 0px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.menu ul {
+    padding: 0px;
+    margin: 0px;
+}
+
+.menu ul li {
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+}
+
+.menu ul li a {
+    padding: 5px 10px 5px 10px;
+    display: block;
+    border-radius: 10px;
+}
+
+.menu ul li a:hover {
+    background-color: #ddeeff;
+}
