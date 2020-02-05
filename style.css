@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css?family=VT323&display=swap');
+
 body {
     width: 900px;
     margin-left: auto;
@@ -55,4 +57,21 @@ a {
 
 .menu ul li a:hover {
     background-color: #ddeeff;
+}
+
+span.option {
+    border-style: solid;
+    border-width: 1px;
+    border-color: #aaaaaa;
+    background-color: #bbbbbb;
+}
+
+.code {
+    background: black;
+    color: #22FF22;
+    padding: 10px;
+    white-space: pre;
+    font-family: 'VT323', monospace;
+    font-size: 24px;
+    border-radius: 10px;
 }

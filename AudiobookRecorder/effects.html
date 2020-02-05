@@ -1,0 +1,184 @@
+<html>
+<head>
+<link rel="stylesheet" href="../style.css"/>
+<title>Majenko's Projects :: Audiobook Recorder :: Effects</title>
+</head>
+<body>
+
+<div class="header">
+<H1>Audiobook Recorder</H1>
+<p>Effects</p>
+</div>
+
+<div class="menu">
+<ul>
+<li><a href='../index.html'>^ Up</a></li>
+<li><a href='index.html'>About</a></li>
+<li><a href='screenshots.html'>Screenshots</a></li>
+<li><a href='tutorial.html'>Tutorial</a></li>
+<li><a href='effects.html'>Effects</a></li>
+<hr/>
+<li><a href='https://github.com/MajenkoProjects/AudiobookRecorder/releases/latest'>Download</a></li>
+<li><a href='https://github.com/MajenkoProjects/AudiobookRecorder'>Repository</a></li>
+</ul>
+</div>
+
+<div class="project">
+<p>Effects are one aspect of AudiobookRecorder which is not managed from within the GUI. Effects are based around XML files that are stored in
+specific locations and contain definitions for combining different filters together to form you desired effects.</p>
+<p>There are some example effect (<span class="option">.eff</span>) files in the repository.</p>
+<p>There are a number of different filters which can be combined within AudobookRecorder:</p>
+<br clear="all"/>
+<ul>
+<li><b>AGC</b> - Automatic Gain Control</li>
+<li><b>Amplifier</b> - Amplification and attenuation</li>
+<li><b>Biquad</b> - Biquad filters of different types (High Pass, Low Pass, Band Pass, Notch, Peak, High Shelf, Low Shelf)</li>
+<li><b>Chain</b> - Virtual filter for linking other filter files together</li>
+<li><b>Clipping</b> - Distortion through limiting the maximum amplitude</li>
+<li><b>Delay Line</b> - Reverb and echo</li>
+<li><b>Group</b> - Wrapper for combining filters</li>
+<li><b>LFO</b> - Low Frequency Oscillator ring modulator</li>
+<li><b>Pan</b> - Left/right panning</li>
+</ul>
+<p>The format of an effect file is pretty simple. Here's an example:</p>
+<div class="code">&lt;effect name="Cut Computer Hum"&gt;
+    &lt;biquad type="notch" fc="28" q="20" gain="-50" /&gt;
+    &lt;biquad type="notch" fc="91" q="20" gain="-50" /&gt;
+    &lt;biquad type="notch" fc="120" q="20" gain="-50" /&gt;
+    &lt;biquad type="lowpass" fc="10000" q="1" gain="-10" /&gt;
+&lt;/effect&gt;
+</div>
+<p>This one simply has 4 biquad filters in it. Three of them are notch filters at 28Hz, 91Hz and 120Hz, each cutting the amplitude around those
+frequencies by -50dB. Then there is a lowpass filter at 10kHz. The gain of the low-pass filter is the opposite that you would think, and actually
+refers to the portion of the spectrum not above the filter frequency, not below it. That means that all frequencies above 10kHz are attenuated by
+-10dB, and frequencies below 10kHz pass unaffected.  The Q factor of a biquad filter defines how sharp or narrow the filter is.</p>
+<p>Filters within an effect are applied in the order that they are specified.</p>
+<p>Effect files can be placed in two places. Either in a folder called <span class="option">System</span> within your main recordings folder, or
+directly in the folder for one of your recordings. Files in the recording itself will override ones named the same in the "system" folder.</p>
+<p>Here is a breakdown of each filter type and the different attributes each can have.</p>
+<h3>AGC</h3>
+<p>The AGC filter attempts to amplify or attenuate the sample to boost quiet sections and soften louder sections.<p>
+<div class="code">&lt;agc ceiling=&quot;num&quot; limit=&quot;num&quot; attack=&quot;num&quot; decay=&quot;num&quot; /&gt;</div>
+<ul>
+<li><b>Ceiling</b> - The target amplutude. Default is 0.708, which is eqivalent to -3dB.</li>
+<li><b>Limit</b> - The absolute maximum amplitude allowed. Default is 1, which is full scale.</li>
+<li><b>Attack</b> - Amount the gain factor changes by when attenuating loud noises</li>
+<li><b>Decay</b> - Amount the gain factor changes by when boosting quiet noises</li>
+</ul>
+<h3>Amplifier</h3>
+<p>The amplifier simply applies a gain to the sample.</p>
+<div class="code">&lt;amplifier gain=&quot;num&quot; /&gt;</div>
+<ul>
+<li><b>Gain</b> - Gain to apply to the samples. 1 is unity gain (no change), 2 is double the gain, 0.5 is half the gain, etc.</li>
+</ul>
+<h3>Biquad</h3>
+<p>A biquad filter is a way of boosting or attenuating different frequency components within a sound. The closest analogy is the graphic
+equaliser on a stereo system.</p>
+<div class="code">&lt;biquad type=&quot;type&quot; q=&quot;factor&quot; fc=&quot;frequency&quot; gain=&quot;num&quot; /&gt;</div>
+<ul>
+<li><b>Type</b> - This is the filtering type performed by the biquad filter:</li>
+    <ul>
+    <li>lowpass - Frequencies above the center frequency are smoothly attenuated</li>
+    <li>highpass - Frequencies below the center frequency are smoothly attenuated</li>
+    <li>bandpass - Frequencies both above and below the center frequency are smoothly attenuated</li>
+    <li>notch - Frequencies at and near the center frequency are attenuated</li>
+    <li>peak - Frequencies at and near the center frequency are amplified</li>
+    <li>lowshelf - Frequencies below the center frequency are sharply amplified or attenuated</li>
+    <li>highshelf - Frequencies above the center frequency are sharply amplified or attenuated</li>
+    </ul>
+<li><b>Q</b> - The &quot;quality&quot; factor of the filter. This defines how wide the filter is, or how sharp the curvature is, etc. The exact effect depends
+on the filter type chosen.</li>
+<li><b>FC</b> - The &quot;center&quot; frequency. This is the nominal frequency the filter operates at.</li>
+<li><b>Gain</b> - How much to attenuate or amplify the signal in the filter-affected frequency ranges.</li>
+</ul>
+<h3>Chain</h3>
+<p>Chain allows you to include the contents of another filter within a new filter. The chained filter is processed as though it were a single effect.</p>
+<div class="code">&lt;chain src=&quot;name&quot; /&gt;</div>
+<p>The single attribute <span class="option">src</span> is the filename with <span class="option">.eff</span> removed. If you have an effect called <span class="option">echo.eff</span>
+the src to chain it would be <span class="option">echo</span>.</p>
+<h3>Clipping</h3>
+<p>Clipping is a very simple distortion effect. Any samples that exceed the clipping value are sliced off at that level. It gives an effect similar to overdrive on a
+guitar amplifier.<p>
+<div class="code">&lt;clipping clip=&quot;num&quot; /&gt;</div>
+<ul>
+<li><b>Clip</b> - The sample value to clip at (between 0 and 1).</li>
+</ul>
+<h3>Delay Line</h3>
+<p>Delay lines are the building blocks of echo and reverberation.  They are also one of the few filters that can also contain other filters.</p>
+<div class="code">&lt;delayline wetonly&gt;
+    &lt;delay samples=&quot;num&quot; gain=&quot;num&quot; pan=&quot;num&quot; /&gt;
+    [&lt;delay samples=&quot;num&quot; gain=&quot;num&quot; pan=&quot;num&quot; /&gt;] ...
+&lt;/delayline&gt;</div>
+<br/>
+<div class="code">&lt;delayline wetonly&gt;
+    &lt;delay samples=&quot;num&quot; gain=&quot;num&quot; pan=&quot;num&quot;&gt;
+        [&lt;... other effects ...&gt;]
+    &lt;/delay&gt;
+    [...]
+&lt;/delayline&gt;</div>
+<ul>
+<li><b>WetOnly</b> - If present will prevent the mixing of the original &quot;dry&quot; audio.</li>
+<li><b>Samples</b> - The number of samples to delay this delay line by</li>
+<li><b>Gain</b> - How much to amplify or attenuate this delay line by</li>
+<li><b>Pan</b> - Move the audio to the left (-1) or the right (+1) or anywhere in bewteen</li>
+</ul>
+<p>Any effects added inside a delay are applied to that delay's samples only before mixing with the incoming audio (yes, those effects can also include other delayline and delay
+filters).</p>
+<h3>Group</h3>
+<p>The group filter allows you to combine multiple filters into a single effect. The main use is as the wrapper around the whole effect and are seldom used inside an effect.</p>
+<div class="code">&lt;group name=&quot;text&quot;&gt;
+    [... other effects ...]
+&lt;group&gt;</div>
+<h3>LFO</h3>
+<p>A Low Frequency Oscillator generates a waveform and mixes it with the incoming audio using amplitude modulation. This allows rapid modification of the amplitude of the audio
+to create all sorts of wonderful effects. The Darlek voice in Doctor Who is a ring modulator (amplitude modulation) using a low frequency oscillation to create the effect.</p>
+<div class="code">&lt;lfo frequency=&quot;f&quot; depth=&quot;num&quot; phase=&quot;num&quot; waveform=&quot;tyope&quot; mode=&quot;mode&quot; duty=&quot;num&quot; /&gt;</div>
+<ul>
+<li><b>Frequency</b> - The frequency of the LFO signal generator</li>
+<li><b>Depth</b> - The amount of modulation to perform</li>
+<li><b>Phase</b> - The phase of the generated waveform (0 to 2*PI)</li>
+<li><b>Waveform</b> - The shape of the waveform to generate:</li>
+    <ul>
+    <li>sine</li>
+    <li>cosine</li>
+    <li>square</li>
+    <li>triangle</li>
+    <li>sawtooth</li>
+    </ul>
+<li><b>Mode</b> - How to combine the modulated signal with the existing signal:</li>
+    <ul>
+    <li>add - add the modulated signal to the original signal</li>
+    <li>replace - replace the original signal with the modulated signal</li>
+    </ul>
+<li><b>Duty</b> - The duty cycle of the generated waveform. Only applicable to square waves. 0-100.</li>
+</ul>
+<h3>Pan</h3>
+<p>Changes the left/right location of the audio signal.</p>
+<div class="code">&lt;pan pan=&quot;pos&quot; /&gt;</div>
+<ul>
+<li><b>Pan</b> - The location to send the audio. -1 is fully left, +1 is fully right. Any value between these two extremes may be specified.</li>
+</ul>
+<h2>Example</h2>
+<p>Here's a more complex example. It provides a good large room echo effect.</p>
+<div class="code">&lt;effect name=&quot;Large Room (loud)&quot;&gt;
+    &lt;biquad type=&quot;lowpass&quot; fc=&quot;10000&quot; q=&quot;1&quot; gain=&quot;-10&quot; /&gt;
+    &lt;delayline&gt;
+        &lt;delay samples=&quot;5500&quot; gain=&quot;0.2&quot; pan=&quot;-0.3&quot;&gt;
+            &lt;biquad type=&quot;highpass&quot; fc=&quot;300&quot; q=&quot;1&quot; gain=&quot;0&quot; /&gt;
+        &lt;/delay&gt;
+        &lt;delay samples=&quot;11000&quot; gain=&quot;0.05&quot; pan=&quot;0.3&quot;&gt;
+            &lt;biquad type=&quot;highpass&quot; fc=&quot;600&quot; q=&quot;1&quot; gain=&quot;0&quot; /&gt;
+        &lt;/delay&gt;
+        &lt;delay samples=&quot;16500&quot; gain=&quot;0.01&quot; pan=&quot;0.0&quot;&gt;
+            &lt;biquad type=&quot;highpass&quot; fc=&quot;600&quot; q=&quot;1&quot; gain=&quot;0&quot; /&gt;
+        &lt;/delay&gt;
+    &lt;/delayline&gt;
+    &lt;amplifier gain=&quot;0.9&quot; /&gt;
+&lt;/effect&gt;</div>
+<p>This gives three echoes, each with a different location in the audio space and filtered to give different qualities of sound. The overall result is then amplified.</p>
+
+
+</div>
+
+</body>
+</html>
