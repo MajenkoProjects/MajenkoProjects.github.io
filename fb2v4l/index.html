@@ -1,0 +1,43 @@
+<html>
+<head>
+<link rel="stylesheet" href="../style.css"/>
+<title>Majenko's Projects :: FB2V4L</title>
+</head>
+<body>
+
+<div class="header">
+<H1>FB2V4L</H1>
+<p>Virtual Framebuffer to Virtual Video4Linux Connector</p>
+</div>
+
+<div class="menu">
+<ul>
+<li><a href='../index.html'>^ Up</a></li>
+<hr/>
+<li><a href='https://github.com/MajenkoProjects/fb2v4l'>Repository</a></li>
+</ul>
+</div>
+
+<div class="project">
+<p>This little program connects a virtual framebuffer device to a virtual v4l device. This allows you to run framebuffer-enabled software (such as X with the fbdev driver) and have the output turned into a video stream which can be captured (for example with OpenBroadcast).</p>
+
+<p>Requires:</p>
+
+<ul>
+<li>Virtual Framebuffer Module - https://github.com/Freescale/linux-module-virtfb</li>
+<li>V4L Loopback Module - https://github.com/umlaeute/v4l2loopback</li>
+<p>Usage:</p>
+
+<ol>
+<li>Load the above modules</li>
+<li>Start a session, for example:</li>
+</ol>
+<div class="code">fb2v4l -f /dev/fb1 -v /dev/video3</div>
+<p>You can now wrote to /dev/fb1 and the results will be shown on /dev/video3.</p>
+<p>You can specify the dimensions using:</p>
+<div class="code">fb2v4l -w 640 -h 480 -f /dev/fb1 -v /dev/video3</div>
+<p>The default size is 800x600 and it always uses 32-bit RGBA.</p>
+</div>
+
+</body>
+</html>
